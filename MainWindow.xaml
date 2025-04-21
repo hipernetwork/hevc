@@ -1,0 +1,55 @@
+﻿<Window x:Class="hevc_encoder.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:hevc_encoder"
+        mc:Ignorable="d"
+        Title="HEVC Encoder" Height="250" Width="750"
+        MinWidth="400" MinHeight="250" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <DockPanel Margin="10">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="0,0,0,10" DockPanel.Dock="Top">
+
+            <!-- Source File GroupBox -->
+            <GroupBox Header="Source File" Margin="0,0,0,10">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="SourceFileTextBox" IsReadOnly="True" Margin="0,0,5,0" FontSize="18"/>
+                    <Button x:Name="SourceFileBrowseButton" Content="Browse" Grid.Column="1" Width="75" FontSize="14" Click="SourceFileBrowseButton_Click"/>
+                </Grid>
+            </GroupBox>
+
+            <!-- Output File GroupBox -->
+            <GroupBox Header="Output File" Margin="0,0,0,10">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="OutputFileTextBox" IsReadOnly="True" FontSize="18" Margin="0,0,5,0"/>
+                    <Button x:Name="OutputFileBrowseButton" Content="Browse" Grid.Column="1" Width="75" FontSize="14" Click="OutputFileBrowseButton_Click"/>
+                </Grid>
+            </GroupBox>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Number of CPU threads:" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="14"/>
+                <ComboBox x:Name="NumberOfCPUComboBox" Width="80" Height="25" SelectedIndex="0" Grid.Column="1" Margin="0,0,5,0" FontSize="14">
+                    <ComboBoxItem Content="Default"/>
+                </ComboBox>
+                <TextBlock x:Name="TotalCPUCountText" Text="/ 0" VerticalAlignment="Center" Grid.Column="2" Margin="0,0,5,0" FontSize="14"/>
+                <Rectangle Height="10" Fill="Transparent" Grid.Column="3"/>
+                <Button x:Name="EncodeButton" Content="Encode" Width="85" Height="25" Grid.Column="4" FontSize="14" Click="EncodeButton_Click"/>
+            </Grid>
+        </StackPanel>
+    </DockPanel>
+</Window>
