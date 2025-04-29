@@ -1,18 +1,15 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace hevc_encoder
 {
     public partial class MainWindow : Window
     {
-        private readonly int m_TotalCPU = Environment.ProcessorCount;
         private readonly string m_FFMpegPath;
 
         public MainWindow()
@@ -28,11 +25,6 @@ namespace hevc_encoder
                 MessageBox.Show("FFmpeg not found!\r\nPath: " + m_FFMpegPath, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Application.Current.Shutdown();
             }
-            TotalCPUCountText.Text = "/ " + m_TotalCPU;
-            for (int i = 1; i <= m_TotalCPU; i++)
-            {
-                NumberOfCPUComboBox.Items.Add(new ComboBoxItem() { Content = i.ToString() });
-            }
         }
 
         private void EnableUI()
@@ -40,7 +32,6 @@ namespace hevc_encoder
             EncodeButton.IsEnabled = true;
             SourceFileBrowseButton.IsEnabled = true;
             OutputFileBrowseButton.IsEnabled = true;
-            NumberOfCPUComboBox.IsEnabled = true;
         }
 
         private void DisableUI()
@@ -48,7 +39,6 @@ namespace hevc_encoder
             EncodeButton.IsEnabled = false;
             SourceFileBrowseButton.IsEnabled = false;
             OutputFileBrowseButton.IsEnabled = false;
-            NumberOfCPUComboBox.IsEnabled = false;
         }
 
         private void SourceFileBrowseButton_Click(object sender, RoutedEventArgs e)
@@ -84,13 +74,6 @@ namespace hevc_encoder
                 if (File.Exists(SourceFileTextBox.Text))
                 {
                     DisableUI();
-                    StringBuilder argBuild = new StringBuilder();
-                    argBuild.Append("-y");
-                    if (NumberOfCPUComboBox.SelectedIndex != 0)
-                    {
-                        argBuild.Append(" -threads " + NumberOfCPUComboBox.Items[NumberOfCPUComboBox.SelectedIndex].ToString());
-                    }
-                    argBuild.Append(" -i \"" + SourceFileTextBox.Text + "\" -c:v libx265 -crf 28 -preset medium -c:a aac -b:a 128k \"" + OutputFileTextBox.Text + "\"");
                     Stopwatch sw = new Stopwatch();
                     sw.Start();
                     await Task.Run(() =>
@@ -98,7 +81,7 @@ namespace hevc_encoder
                         ProcessStartInfo psi = new ProcessStartInfo
                         {
                             FileName = m_FFMpegPath,
-                            Arguments = argBuild.ToString(),
+                            Arguments = "-y -i \"" + SourceFileTextBox.Text + "\" -c:v libx265 -crf 28 -preset medium -c:a aac -b:a 128k -threads 0 \"" + OutputFileTextBox.Text + "\"",
                             UseShellExecute = true,
                             CreateNoWindow = false
                         };
